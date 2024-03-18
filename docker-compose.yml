@@ -1,4 +1,5 @@
 version: "3.9"
+
 services:
   postgres:
     image: postgres:latest
@@ -10,8 +11,13 @@ services:
       - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
     ports:
       - "5432:5432"
-  filmoteca:
+
+  web:
     build:
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
+    depends_on:
+      - postgres
+    links:
+      - postgres

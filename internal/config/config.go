@@ -3,27 +3,24 @@ package config
 import (
 	"github.com/ilyakaznacheev/cleanenv"
 	"log"
-	"os"
 )
 
 type Cfg struct {
 	Logger struct {
-		Mode string `yaml:"mode"`
+		Mode string `yaml:"mode" default:"debug"`
 	} `yaml:"logger"`
 	HTTP struct {
-		Host string `yaml:"host"`
+		Host string `yaml:"host" default:":8080"`
 	} `yaml:"http"`
 	PostgreSQL struct {
-		DSN string `yaml:"dsn" default:"localhost"`
+		DSN string `yaml:"dsn" default:"postgres://postgres:postgres@0.0.0.0:5432/postgres"`
 	} `yaml:"postgresql"`
 }
 
 func NewConfig() Cfg {
 	cfg := Cfg{}
-	//if err := cleanenv.ReadConfig("./internal/config/config.yaml", &cfg); err != nil {
-	if err := cleanenv.ReadConfig("E:\\Projects\\filmoteca\\internal\\config\\config.yaml", &cfg); err != nil {
+	if err := cleanenv.ReadConfig("./internal/config/config.yaml", &cfg); err != nil {
 		log.Println("cannot read configs")
-		os.Exit(1)
 	}
 	log.Println("configs getting success")
 	return cfg

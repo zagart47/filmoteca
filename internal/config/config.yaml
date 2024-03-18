@@ -1,9 +1,9 @@
 logger:
   mode: debug
 http:
-  host: localhost:8080
+  host: :8080
 
 postgresql:
-  dsn: postgres://postgres:postgres@localhost:5432/postgres
+  dsn: postgres://postgres:postgres@0.0.0.0:5432/postgres
 
 
