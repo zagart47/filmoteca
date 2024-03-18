@@ -1,0 +1,590 @@
+openapi: 3.0.3
+info:
+  title: Filmoteca API
+  description: Filmoteca
+  version: 1.0.0
+  contact:
+    name: Artur Z
+    email: zagart47@gmail.com
+    url: https://t.me/zagart47
+servers:
+  - url: 'http://localhost:8080'
+paths:
+  /actors:
+    get:
+      tags:
+        - Все актеры
+      summary: Получить список всех или одного актера из базы данных
+      description: Хендлер для получения актеров из базы данных
+      operationId: GetActor
+      parameters:
+        - name: id
+          in: query
+          description: Идентификатор. Метод найдет по нему актера в базе данных.
+          required: false
+          allowEmptyValue: false
+      responses:
+        200:
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                title: Актеры
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: ID актера
+                    example: 4
+                  name:
+                    type: string
+                    description: Имя актера
+                    example: Robert De Niro
+                  gender:
+                    type: string
+                    description: Пол актера
+                    example: male
+                  birthdate:
+                    type: string
+                    description: Дата рождения актера
+                    example: 1953-05-12
+                  movies:
+                    type: object
+                    description: Фильмы с участием актера
+                    example: [
+                       Таксист ,
+                       Знакомство с факерами
+                    ]
+        400:
+          description: Ошибки в аргументе или запросах
+          content:
+            application/json:
+              schema:
+                title: Актеры не найдены
+                type: object
+                example: Not found
+
+  /actors/new:
+    post:
+      tags:
+        - Добавить нового актера
+      summary: Позволяет добавить нового актера
+      description: Добавить нового актера
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Rebert De Niro
+                  description: Имя актера
+                gender:
+                  type: string
+                  example: male
+                  description: Пол актера
+                birthdate:
+                  type: string
+                  example: 1953-05-12
+                  description: Дата рождения
+      operationId: AddNewActor
+      parameters:
+        - name: name
+          in: query
+          description: Имя актера
+          required: true
+          schema:
+            type: string
+          allowEmptyValue: false
+        - name: gender
+          in: query
+          description: Пол актера
+          required: true
+          schema:
+            type: string
+          allowEmptyValue: false
+        - name: birthdate
+          in: query
+          description: Дата рождения актера
+          required: true
+          schema:
+            type: string
+          allowEmptyValue: false
+      responses:
+        200:
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                title: Актеры
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: ID актера
+                    example: 4
+                  name:
+                    type: string
+                    description: Имя актера
+                    example: Robert De Niro
+                  gender:
+                    type: string
+                    description: Пол актера
+                    example: male
+                  birthdate:
+                    type: string
+                    description: Дата рождения актера
+                    example: 1953-05-12
+                  movies:
+                    type: array
+                    description: Фильмы с участием актера
+                    example: [ { title: Таксист }, { title: Знакомство с факерами } ]
+        400:
+          description: Ошибки в аргументе или запросах
+          content:
+            application/json:
+              schema:
+                title: Актер не найден
+                type: object
+                example: Not found
+      security:
+        - filmoteca_auth:
+            - write:
+  /actors/edit:
+    put:
+      tags:
+        - Редактировать данные актера
+      summary: Позволяет редактровать данные актера
+      description: Редактировать данные актера
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Betty Green
+                  description: Имя актера
+                  required: false
+                gender:
+                  type: string
+                  example: female
+                  description: Пол актера
+                  required: false
+                birthdate:
+                  type: string
+                  required: false
+                  description: Дата рождения актера
+                  example:
+      operationId: EditActor
+      parameters:
+        - name: id
+          in: query
+          description: Идентификатор по которому метод найдет актера в БД для редактирования
+          required: true
+          schema:
+            type: string
+          allowEmptyValue: false
+      responses:
+        200:
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                title: Актеры
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: ID актера
+                    example: 4
+                  name:
+                    type: string
+                    description: Имя актера
+                    example: Betty Green
+                  gender:
+                    type: string
+                    description: Пол актера
+                    example: female
+                  birthdate:
+                    type: string
+                    description: Дата рождения актера
+                    example: 1953-05-12
+                  movies:
+                    type: array
+                    description: Фильмы с участием актера
+                    example: [ { title: Таксист }, { title: Знакомство с факерами } ]
+        400:
+          description: Ошибки в аргументе или запросах
+          content:
+            application/json:
+              schema:
+                title: Актер не найден
+                type: object
+                example: Not found
+      security:
+        - filmoteca_auth:
+            - write:
+  /actors/delete:
+    delete:
+      tags:
+        - Удалить данные актера или удалить актера
+      summary: Позволяет удалить данные актера или просто удалить актера из бд
+      description: Удалить данные актера или удалить актера
+      operationId: DeleteActor
+      parameters:
+        - name: id
+          in: query
+          description: Идентификатор по которому метод найдет актера в БД для редактирования
+          required: true
+          schema:
+            type: string
+          allowEmptyValue: false
+        - name: name
+          in: query
+          description: Удалить имя актера
+          required: false
+          schema:
+            type: string
+          allowEmptyValue: true
+        - name: gender
+          in: query
+          description: Удалить пол актера
+          required: false
+          schema:
+            type: string
+          allowEmptyValue: true
+        - name: birthdate
+          in: query
+          description: Удалить дату рождения актера
+          required: false
+          schema:
+            type: string
+          allowEmptyValue: true
+      responses:
+        200:
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                title: Актер удален
+                type: string
+                example: Актер с id=4 удален
+        400:
+          description: Ошибки в аргументе или запросах
+          content:
+            application/json:
+              schema:
+                title: Актер не найден
+                type: object
+                example: Not found
+      security:
+        - filmoteca_auth:
+            - write:
+  /movies:
+    get:
+      tags:
+        - Все фильмы
+      summary: Получить список всех или одного фильма из базы данных
+      description: Хендлер для получения фильмов из базы данных
+      operationId: GetMovie
+      parameters:
+        - name: id
+          in: query
+          description: Идентификатор. Метод найдет по нему фильм в базе данных.
+          required: false
+          allowEmptyValue: false
+          schema:
+            type: string
+        - name: title
+          in: query
+          description: Поиск фильма по фрагменту слова в названии фильма
+          required: false
+          allowEmptyValue: false
+          schema:
+            type: string
+        - name: actor
+          in: query
+          description: Поиск фильма по фрагменту имени актера, игравшего в этом фильме
+          required: false
+          allowEmptyValue: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                title: Фильмы
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: ID фильма
+                    example: 4
+                  title:
+                    type: string
+                    description: Название фильма
+                    example: Таксист
+                  description:
+                    type: string
+                    description: Описание фильма
+                    example: Тусклый свет слепых фонарей, скелеты фабричных труб, задыхающихся в собственном дыму. Вавилонские башни небоскребов, все это — ад Нового времени, Нью-Йорк.
+                  release_date:
+                    type: string
+                    description: Дата релиза фильма
+                    example: 1976-10-10
+                  rating:
+                    type: number
+                    description: Рейтинг фильма
+                    example: 8.2
+        400:
+          description: Ошибки в аргументе или запросах
+          content:
+            application/json:
+              schema:
+                title: Фильмы не найдены
+                type: object
+                example: Not found
+  /movies/new:
+    post:
+      tags:
+        - Добавить фильм в котором снимался актер
+      summary: Позволяет добавить фильм в котором снимался актер
+      description: Добавить фильм
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: Название фильма
+                  example: Апокалипсис сегодня
+                  maxLength: 150
+                  minLength: 1
+                description:
+                  type: string
+                  description: Описание фильма
+                  example: Сегодня аполипсис
+                  maxLength: 1000
+                release_date:
+                  type: string
+                  description: Дата релиза фильма
+                  example: 1978-05-12
+                rating:
+                  type: number
+                  description: Рейтинг фильма
+                  maximum: 10
+                  minimum: 0.1
+                  example: 6.8
+      operationId: AddNew
+      parameters:
+        - name: id
+          in: query
+          description: ID актера
+          required: true
+          schema:
+            type: string
+          allowEmptyValue: false
+      responses:
+        200:
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                title: Актеры
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: ID актера
+                    example: 4
+                  name:
+                    type: string
+                    description: Имя актера
+                    example: Robert De Niro
+                  gender:
+                    type: string
+                    description: Пол актера
+                    example: male
+                  birthdate:
+                    type: string
+                    description: Дата рождения актера
+                    example: 1953-05-12
+                  movies:
+                    type: array
+                    description: Фильмы с участием актера
+                    example: [ { title: Таксист }, { title: Знакомство с факерами } ]
+        400:
+          description: Ошибки в аргументе или запросах
+          content:
+            application/json:
+              schema:
+                title: Фильм не добавлен
+                type: object
+                example: Not added
+      security:
+        - filmoteca_auth:
+            - write:
+  /movies/edit:
+    put:
+      tags:
+        - Редактировать данные фильма
+      summary: Позволяет редактровать данные фильма
+      description: Редактировать данные фильма
+      operationId: EditMovie
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: Название фильма
+                  example:
+                  required: false
+                  minLength: 1
+                  maxLength: 150
+                description:
+                  type: string
+                  description: Описание фильма
+                  example:
+                  maxLength: 1000
+                  required: false
+                release_date:
+                  type: string
+                  description: Дата релиза
+                  example:
+                  required: false
+                rating:
+                  type: number
+                  description: Рейтинг
+                  required: false
+                  example: 8
+                  maximum: 10
+                  minimum: 0.1
+      parameters:
+        - name: id
+          in: query
+          description: Идентификатор по которому метод найдет фильма в БД для редактирования
+          required: true
+          schema:
+            type: string
+          allowEmptyValue: false
+      responses:
+        200:
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                title: Фильм
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: ID фильма
+                    example: 4
+                  title:
+                    type: string
+                    description: Название фильма
+                    minLength: 1
+                    maxLength: 150
+                    example: Таксист
+                  description:
+                    type: string
+                    description: Описание фильма
+                    maxLength: 1000
+                    example: Тусклый свет слепых фонарей, скелеты фабричных труб, задыхающихся в собственном дыму. Вавилонские башни небоскребов, все это — ад Нового времени, Нью-Йорк.
+                  release_date:
+                    type: string
+                    description: Дата релиза фильма
+                    example: 1976-10-10
+                  rating:
+                    type: number
+                    description: Рейтинг фильма
+                    example: 8
+        400:
+          description: Ошибки в аргументе или запросах
+          content:
+            application/json:
+              schema:
+                title: Фильм не найден
+                type: object
+                example: Not found
+      security:
+        - filmoteca_auth:
+            - write:
+  /movies/delete:
+    delete:
+      tags:
+        - Удалить данные фильма или удалить фильм
+      summary: Позволяет удалить данные фильма или просто удалить фильм из бд
+      description: Удалить данные фильма или удалить фильм
+      operationId: DeleteMovie
+      parameters:
+        - name: id
+          in: query
+          description: Идентификатор по которому метод найдет фильм в БД для удаления инфо или самого фильма
+          required: true
+          schema:
+            type: string
+          allowEmptyValue: false
+
+        - name: title
+          in: query
+          description: Любой символ удалит название фильма
+          required: false
+          schema:
+            type: string
+          allowEmptyValue: true
+
+        - name: description
+          in: query
+          description: Любой символ удалит описание фильма
+          required: false
+          schema:
+            type: string
+          allowEmptyValue: true
+
+        - name: release_date
+          in: query
+          description: Любой символ удалит дату релиза
+          required: false
+          schema:
+            type: string
+          allowEmptyValue: true
+
+        - name: rating
+          in: query
+          description: Любой символ удалит рейтинг
+          required: false
+          schema:
+            type: string
+          allowEmptyValue: true
+
+      responses:
+        200:
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                title: Фильм удален
+                type: string
+                example: Актер с id=4 удален
+        400:
+          description: Ошибки в аргументе или запросах
+          content:
+            application/json:
+              schema:
+                title: Фильм не найден
+                type: object
+                example: Not found
+      security:
+        - filmoteca_auth:
+            - write:
