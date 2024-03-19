@@ -14,7 +14,7 @@ import (
 func (h *Handler) Movies(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
-		ctx, cancel := context.WithTimeout(context.Background(), 999*time.Second)
+		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 		defer cancel()
 		w.Header().Set("Content-Type", "application/json")
 		haveId := r.URL.Query().Has("id")
@@ -66,7 +66,7 @@ func (h *Handler) CreateMovie(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "POST":
 		if h.CheckUser(w, r) {
-			ctx, cancel := context.WithTimeout(context.Background(), 999*time.Second)
+			ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 			defer cancel()
 			w.Header().Set("Content-Type", "application/json")
 			id := r.URL.Query().Get("id")
@@ -117,7 +117,7 @@ func (h *Handler) EditMovie(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "PUT":
 		if h.CheckUser(w, r) {
-			ctx, cancel := context.WithTimeout(context.Background(), 999*time.Second)
+			ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 			defer cancel()
 			w.Header().Set("Content-Type", "application/json")
 			id := r.URL.Query().Get("id")

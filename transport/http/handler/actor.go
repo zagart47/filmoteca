@@ -15,7 +15,7 @@ func (h *Handler) NewActor(w http.ResponseWriter, r *http.Request) { // POST
 	switch r.Method {
 	case "POST":
 		if h.CheckUser(w, r) {
-			ctx, cancel := context.WithTimeout(context.Background(), 999*time.Second)
+			ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 			defer cancel()
 			w.Header().Set("Content-Type", "application/json")
 			actor := entity.NewActor()
@@ -38,7 +38,7 @@ func (h *Handler) Actors(w http.ResponseWriter, r *http.Request) {
 	logger.Log.Info("actors getting started")
 	switch r.Method {
 	case "GET":
-		ctx, cancel := context.WithTimeout(context.Background(), 999*time.Second)
+		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 		defer cancel()
 		w.Header().Set("Content-Type", "application/json")
 		haveId := r.URL.Query().Has("id")
@@ -77,7 +77,7 @@ func (h *Handler) EditActor(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "PUT":
 		if h.CheckUser(w, r) {
-			ctx, cancel := context.WithTimeout(context.Background(), 999*time.Second)
+			ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 			defer cancel()
 			w.Header().Set("Content-Type", "application/json")
 			id := r.URL.Query().Get("id")
@@ -119,7 +119,7 @@ func (h *Handler) DeleteActor(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "DELETE":
 		if h.CheckUser(w, r) {
-			ctx, cancel := context.WithTimeout(context.Background(), 999*time.Second)
+			ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 			defer cancel()
 			w.Header().Set("Content-Type", "application/json")
 			haveId := r.URL.Query().Has("id")

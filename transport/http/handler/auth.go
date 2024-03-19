@@ -22,7 +22,7 @@ func (h *Handler) CheckUser(w http.ResponseWriter, r *http.Request) bool {
 		logger.Log.Error("Error decoding data:", err)
 		return false
 	}
-	ctx, cancel := context.WithTimeout(context.Background(), 999*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	users, err := h.Services.Users.Get(ctx)
 	if err != nil {
