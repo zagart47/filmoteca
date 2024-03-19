@@ -3,29 +3,19 @@ version: "3.9"
 services:
   postgres:
     image: postgres:latest
-    networks:
-      - default
     environment:
       POSTGRES_DB: "postgres"
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "postgres"
     volumes:
-      - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      - ./internal/repository/postgresql/migrations:/docker-entrypoint-initdb.d
     ports:
       - "5432:5432"
 
   web:
-    networks:
-      - default
     build:
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
     depends_on:
       - postgres
-    links:
-      - postgres
-networks:
-  default:
-    external: true
-    name: my-network

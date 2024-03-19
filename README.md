@@ -22,9 +22,8 @@ REST API для управления базой данных фильмов
 - [Docker](https://www.docker.com/)
 
 ## Использование
-Необходимо создать сеть и собрать контейнеры с помощью docker compose:
+Необходимо собрать контейнеры с помощью docker compose:
 ```powershell
-docker network create -d bridge my-network
 docker compose up -d
 ```
 
@@ -34,7 +33,7 @@ docker compose up -d
 ## Разработка
 
 ### Требования
-Для установки и запуска проекта необходим... golang, docker.
+Для установки и запуска проекта необходимы golang, docker и прямые руки.
 
 ## Contributing
 Если у вас есть предложения или идеи по дополнению проекта или вы нашли ошибку, то пишите мне в tg: @zagart47
