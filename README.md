@@ -22,8 +22,9 @@ REST API для управления базой данных фильмов
 - [Docker](https://www.docker.com/)
 
 ## Использование
-Необходимо собрать контейнеры с помощью docker compose
+Необходимо создать сеть и собрать контейнеры с помощью docker compose:
 ```powershell
+docker network create -d bridge my-network
 docker compose up -d
 ```
 

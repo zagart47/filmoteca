@@ -13,7 +13,7 @@ type Cfg struct {
 		Host string `yaml:"host" default:":8080"`
 	} `yaml:"http"`
 	PostgreSQL struct {
-		DSN string `yaml:"dsn" default:"postgres://postgres:postgres@0.0.0.0:5432/postgres"`
+		DSN string `yaml:"dsn" default:"postgres://postgres:postgres@postgres:5432/postgres"`
 	} `yaml:"postgresql"`
 }
 

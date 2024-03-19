@@ -4,6 +4,6 @@ http:
   host: :8080
 
 postgresql:
-  dsn: postgres://postgres:postgres@0.0.0.0:5432/postgres
+  dsn: postgres://postgres:postgres@postgres:5432/postgres
 
 

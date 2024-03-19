@@ -3,6 +3,8 @@ version: "3.9"
 services:
   postgres:
     image: postgres:latest
+    networks:
+      - default
     environment:
       POSTGRES_DB: "postgres"
       POSTGRES_USER: "postgres"
@@ -13,6 +15,8 @@ services:
       - "5432:5432"
 
   web:
+    networks:
+      - default
     build:
       dockerfile: Dockerfile
     ports:
@@ -21,3 +25,7 @@ services:
       - postgres
     links:
       - postgres
+networks:
+  default:
+    external: true
+    name: my-network
