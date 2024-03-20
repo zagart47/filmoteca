@@ -154,3 +154,44 @@ func (h *Handler) EditMovie(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 	}
 }
+func (h *Handler) DeleteMovie(w http.ResponseWriter, r *http.Request) {
+	switch r.Method {
+	case "DELETE":
+		if h.CheckUser(w, r) {
+			ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+			defer cancel()
+			w.Header().Set("Content-Type", "application/json")
+			haveId := r.URL.Query().Has("id")
+			options := make(map[string]bool)
+			title := r.URL.Query().Has("title")
+			options["title"] = title
+			description := r.URL.Query().Has("description")
+			options["description"] = description
+			releaseDate := r.URL.Query().Has("release_date")
+			options["release_date"] = releaseDate
+			rating := r.URL.Query().Has("rating")
+			options["rating"] = rating
+			var o []string
+			for k, v := range options {
+				if v {
+					o = append(o, k)
+				}
+			}
+			if !haveId {
+				http.Error(w, "actor bad id", http.StatusInternalServerError)
+				logger.Log.Error("actor bad id")
+				return
+			}
+			if haveId {
+				id := r.URL.Query().Get("id")
+				_, err := h.Services.Movies.Delete(ctx, id, o)
+				if err != nil {
+					http.Error(w, "deleting error", http.StatusInternalServerError)
+					logger.Log.Error("deleting error", err.Error())
+				}
+			}
+		}
+	default:
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+	}
+}
